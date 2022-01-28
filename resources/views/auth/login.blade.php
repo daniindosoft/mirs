@@ -12,7 +12,7 @@
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="email" name="email" type="email" required autofocus>
+                                <input id="email" name="email" type="text" required autofocus>
                                 <label for="email">E-Mail</label>
                             </div>
                         </div>
