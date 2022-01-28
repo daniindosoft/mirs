@@ -15,13 +15,27 @@
     <link href="{{ asset('css/material-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     @yield('css')
+    <style>
+        .p-btn{
+            padding:0px 11px 0px 10px
+        }
+        .w-100{
+            width: 100%
+        }
+    </style>
 </head>
 <body>
     <div id="app">
         @include('layouts.partials.nav')
-        <div class="container">
-            <div class="section">
-                @yield('content')
+        <div class="row">
+            <div class="col s1">
+            </div>
+            <div class="col s10">
+                <div class="section">
+                    @yield('content')
+                </div>
+            </div>
+            <div class="col s1">
             </div>
         </div>
     </div>

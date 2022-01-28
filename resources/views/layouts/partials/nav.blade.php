@@ -13,7 +13,7 @@
 <ul id="profile-dropdown2" class="dropdown-content">
     <li>
         <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-            Logout
+            Logouts
         </a>
     </li>
 </ul>
@@ -27,7 +27,7 @@
                 <li class="{{Request::is('login')?'active':''}}"><a href="{{ route('login') }}">Login</a></li>
                 <li class="{{Request::is('register')?'active':''}}"><a href="{{ route('register') }}">Register</a></li>
             @else
-                <li><a class="dropdown-button" href="#!" data-activates="profile-dropdown1" data-beloworigin="true">{{ Auth::user()->name }}<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-button" href="#!" data-activates="profile-dropdown1" data-beloworigin="true">{{ Auth::user()->name }} ({{ Auth::user()->divisi->nama_divisi }})<i class="material-icons right">arrow_drop_down</i></a></li>
             @endguest
         </ul>
 
