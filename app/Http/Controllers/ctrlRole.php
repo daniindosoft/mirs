@@ -18,11 +18,11 @@ class ctrlRole extends Controller
     {
     	/*
     	ROLE
-    	1 = KELUARKAN STOK
-    	2 = APPROVE
+    	5 = KELUARKAN STOK
+    	4 = APPROVE
     	3 = APPROVE
-    	4 = ORDER & APPROVE
-    	5 = RECEIVED & ORDER
+    	2 = ORDER & APPROVE
+    	1 = RECEIVED & ORDER
     	 */
     	
     	return view('layouts.form_order');

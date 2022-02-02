@@ -1,22 +1,26 @@
-<form>
+
   <div class="row">
     <div class="row">
       <div class="col s12">
         <ul class="tabs">
-          @if ( in_array(Auth::user()->divisi->level_access, array(5, 4)) )
+          @if ( in_array(Auth::user()->divisi->level_access, array(2, 1)) )
+            {{-- FORM PEMESANAN --}}
             <li class="tab col s3"><a href="#test1" class="active"><i class="fa fa-shopping-cart"></i> Pemesanan</a></li> 
+            {{-- TABEL DARI FORM PEMESANAN --}}
             <li class="tab col s3"><a href="#test3"><i class="fa fa-edit"></i> Pesanan</a></li> 
           @endif
-          @if ( in_array(Auth::user()->divisi->level_access, array(1)) )
+          @if ( in_array(Auth::user()->divisi->level_access, array(5)) )
+            {{-- EM/KELUARKAN STOK --}}
             <li class="tab col s3"><a href="#test4"><i class="fa fa-check-square"></i> Keluarkan</a></li> 
           @endif
           @if ( in_array(Auth::user()->divisi->level_access, array(2, 3, 4)) )
+            {{--  --}}
             <li class="tab col s3"><a href="#test2"><i class="fa fa-mouse-pointer"></i> Persetujuan</a></li> 
           @endif
 
         </ul>
       </div>
-      @if ( in_array(Auth::user()->divisi->level_access, array(1)) )
+      @if ( in_array(Auth::user()->divisi->level_access, array(5)) )
         <div id="test4" class="col s12">
           <br>
           <h4 class="center">KELUARKAN STOK</h4>
@@ -49,7 +53,7 @@
           </table>
         </div>
       @endif
-      @if ( in_array(Auth::user()->divisi->level_access, array(5, 4)) )
+      @if ( in_array(Auth::user()->divisi->level_access, array(1, 2)) )
         <div id="test3" class="col s12">
           <br>
           <h4 class="center">TABEL PESANAN</h4>
@@ -84,25 +88,52 @@
         <div id="test1" class="col s12">
           <br>
           <h4 class="center">PESAN DISINI</h4>
+          <br>
+          <br>
+          <form action="{{ url('/mirs/ajukan') }}" method="post">
+            {{ csrf_field() }}
             <div class="clone1 clone">
-              <div class="col s4">
+              <div class="col s3">
                 <div class="form-group select2div">
                   <label for=""><b class="number">1.</b> MATERIAL KODE</label>
-                  <select style="width: 100%" class="form-control select2" style="display: block;">
+                  <select name="material_code[]" style="width: 100%" class="form-control select2 select-material" style="display: block;">
                     <option value="">Pilih Material</option>
                     @foreach (App\mdlMaterial::all() as $material)
-                      <option value="{{ $material->no_material }}" urut="1" deskripsi="{{ $material->material_description }}">{{ $material->no_material.' ('.$material->material_description.')' }}</option> 
+                      <option value="{{ $material->id }}" urut="1" price="{{ $material->price }}" begin="{{ $material->begin }}" end="{{ $material->end }}" uom="{{ $material->uom }}" deskripsi="{{ $material->deskripsi }}" code="{{ $material->material_code }}">{{ $material->material_code.' ('.$material->deskripsi.')' }}</option> 
                     @endforeach
                   </select>
+                  <br>
+                  <p class="pdes"></p>
                 </div>
               </div>
-              <div class="col s4">
-                <label>Deskripsi</label><br>
-                <h5>...</h5>
+              <div class="col s3">
+                <div class="form-group select2div3">
+                  <label for="">CHARGE TO</label>
+                  <select name="chargeto[]" style="width: 100%" class="form-control select2 select-block" style="display: block;">
+                    <option value="">Pilih ..</option>
+                    @foreach (App\mdlBlock::all() as $block)
+                      <option value="{{ $block->id }}" urut="1" block="{{ $block->block }}" ha="{{ $block->ha }}">{{ $block->block.' - '.$block->ha }}</option> 
+                    @endforeach
+                  </select>
+                   
+                </div>
               </div>
-              <div class="col s2">
+              <div class="col s1">
                 <label>Qty</label>
-                <input type="number" class="form-control">
+                <input type="number" name="qty[]" class="form-control qty" urut=1>
+              </div>
+              <div class="col s3">
+                <div class="form-group select2div2">
+                  <label>Account</label>
+                  <select name="account[]" style="width: 100%" class="form-control select2 select-gl" style="display: block;">
+                    <option value="">Pilih Account</option>
+                    @foreach (App\mdlGl::all() as $gl)
+                      <option value="{{ $gl->id }}" urut="1" account="{{ $gl->kode }}" deskripsi="{{ $gl->deskripsi }}">{{ $gl->kode.' ('.$gl->deskripsi.')' }}</option> 
+                    @endforeach
+                  </select>
+                 
+                  
+                </div>
               </div>
               <div class="col s1">
                 <label>&nbsp;</label>
@@ -110,10 +141,84 @@
                   <i class="material-icons left">delete</i>
                 </button>
               </div>
+               
+              <div class="col s12">
+                <div class="col s12 detail">
+                  <div class="col s3">
+                    <label>Material Code</label><br>
+                    <h6 class="code">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>Deskripsi</label><br>
+                    <h6 class="deskripsi">..</h6>
+                  </div>
+                  <div class="col s12 mt-25">
+                    <b class="b">REQUESTION</b>
+                  </div>
+                  <div class="col s3">
+                    <label>Charge To</label><br>
+                    <h6 class="chargeto">..</h6>
+                  </div>
+                
+                  <div class="col s3">
+                    <label>UOM</label><br>
+                    <h6 class="uom">..</h6>
+                  </div>
+                  <div class="col s12 mt-25">
+                    <b class="b">ISSUE QTY</b>
+                  </div>
+                  <div class="col s3">
+                    <label>Luas Ha</label><br>
+                    <h6 class="luasha">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>Dosage</label><br>
+                    <h6 class="dosage">..</h6>
+                  </div>
+                  <div class="col s12 mt-25">
+                    <b class="b">STOCK</b>
+                  </div>
+                  <div class="col s3">
+                    <label>BEGIN</label><br>
+                    <h6 class="begin">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>END</label><br>
+                    <h6 class="end">..</h6>
+                  </div>
+                  <div class="col s12 mt-25">
+                    <b class="b">FOR ACCOUNT DEPT</b>
+                  </div>
+                  <div class="col s3">
+                    <label>Price</label><br>
+                    <h6 class="price">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>TTL AMOUNT</label><br>
+                    <h6 class="ttlamount">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>ACCOUNT</label><br>
+                    <h6 class="account">..</h6>
+                  </div>
+                  <div class="col s3">
+                    <label>REMARKS</label><br>
+                    <h6 class="remarks">..</h6>
+                  </div>
+                </div>
+              </div>
+               
             </div>
-            <div class="col s12">
-              <button type="button" class="btn btn-primary w-100 add-material">TAMBAH</button>
+            <div class="col s4">
+              <button type="button" class="btn green w-100 add-material">
+                <i class="fa fa-plus-square"></i> Tambah Material</button>
             </div>
+            <div class="col s8">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="fa fa-file"></i> Ajukan
+              </button>
+            </div>
+          </form>
         </div>
       @endif
       <div id="test2" class="col s12">
@@ -157,4 +262,3 @@
         </div>
       </div>
     </div>
-</form>
