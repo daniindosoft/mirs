@@ -50,6 +50,58 @@
         .mt-25{
             margin-top: 25px;
         }
+        .tg tr:hover td{
+            background: #f1f1f1;
+        }
+        .tg  {border-collapse:collapse;border-spacing:0; width: 1800px;}
+        .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+          overflow:hidden;padding:10px 5px;word-break:normal;}
+        .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+          font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+        .tg .tg-0lax{text-align:left;vertical-align:top}
+        th{
+            font-weight: bold !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            color:#509ba0
+        }
+        #dataModal{
+            /*height: 330px;*/
+        }
+        .modal-lg{
+            width: 90% !important;
+            max-height: 80% !important;
+        }
+        small{
+            color: #c1c1c1;
+            font-style: italic;
+        }
+        .hirarki{}
+        .hirarki span{
+            padding: 4px;
+            background: #5d6c6d;
+            color: white;
+            border-radius: 5px;
+        }
+        .hirarki span b, .badge{
+            padding: 3px;
+            color: white;
+            border-radius: 3px;
+        }
+        .cursor-pointer:hover{
+            opacity: 0.8
+        }
+        .cursor-pointer{
+            cursor: pointer;
+        }
+        .pending{
+            opacity: 0.5
+        }
+        .custom-input{
+            background: #e7e7e7 !important;
+            border: 1px !important;
+            padding-left: 5px !important;
+        }
     </style>
 @endsection
 @section('js')
@@ -65,10 +117,11 @@
 
     <script>
         var lengthRowGlobal = 0;
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-  });
+          $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal').modal();
+          });
+
         $(document).ready(function () {
             $('.striped').DataTable();
             var lengthRowGlobal = $('.clone').length;
@@ -187,9 +240,26 @@
 
             $('.clone'+idclone+' .dosage').text(qty/luasha);
             $('.clone'+idclone+' .ttlamount').text(qty*price);
+            $('.clone'+idclone+' .ttlamountinput').val(qty*price);
             console.log(qty+' x '+luasha);
 
             // $('.clone'+idclone+' .dosage').html(account);
+        }
+
+        function loadMirsToPopUp(id){
+            $('#dataModal').html('<p><i class="fa fa-spinner fa-spin"></i> Loading</p>');
+            $.ajax({
+              type: 'GET',
+              url: "/mirs/get/"+id,
+              success: function(a) {
+                $('#dataModal').html(a.data);
+                $('.approved-mirs').css('display','block');
+                if(a.status == 1){
+                    $('.approved-mirs').css('display','none');
+                }
+
+              }
+            });
         }
          
     </script>

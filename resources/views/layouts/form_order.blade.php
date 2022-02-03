@@ -28,28 +28,29 @@
             <thead>
               <tr>
                 <th>NO</th>
+                <th>Nama Pemesan</th>
                 <th>No MIRS</th>
                 <th>Tanggal Pemesanan</th>
                 <th>Status</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>s</td>
-                <td>s</td> 
-                <td>s</td> 
-                <td>
-                  <span data-badge-caption="Ditolak" class="new badge red"></span>
-                  <span data-badge-caption="Disetujui" class="new badge green"></span>
-                  <span data-badge-caption="Menunggu" class="new badge"></span>
+            @php
+              $no=1;
+            @endphp
+            @foreach(\App\Http\Controllers\ctrlRole::persetujuan() as $mirs)
 
-                </td> 
-                <td>
-                  <a href="#modal1" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
-                </td> 
-              </tr>
-            </tbody>
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $mirs->user->nama_lengkap }}</td> 
+                  <td>{{ $mirs->no_mirs }}</td> 
+                  <td>{{ $mirs->date }}</td> 
+                  <td>{!! \App\Http\Controllers\ctrlRole::getStatusMirs($mirs->idnya) !!}</td> 
+                  <td>
+                    <a href="#modal1" onclick="return loadMirsToPopUp({{$mirs->idnya}})" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
+                  </td> 
+                </tr>
+              @endforeach
           </table>
         </div>
       @endif
@@ -68,20 +69,22 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>s</td>
-                <td>s</td> 
-                <td>s</td> 
-                <td>
-                  <span data-badge-caption="Ditolak" class="new badge red"></span>
-                  <span data-badge-caption="Disetujui" class="new badge green"></span>
-                  <span data-badge-caption="Menunggu" class="new badge"></span>
+              @foreach(App\mdlMirs::where('request_by', Auth::user()->id)->get() as $key => $mirs)
+                <tr>
+                  <td>{{ $key+1 }}</td>
+                  <td>{{ $mirs->no_mirs }}</td> 
+                  <td>{{ $mirs->date }}</td> 
+                  <td>
+                    <span data-badge-caption="Ditolak" class="new badge red"></span>
+                    <span data-badge-caption="Disetujui" class="new badge green"></span>
+                    <span data-badge-caption="Menunggu" class="new badge"></span>
 
-                </td> 
-                <td>
-                  <a href="#modal1" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
-                </td> 
-              </tr>
+                  </td> 
+                  <td>
+                    <a href="#modal1" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
+                  </td> 
+                </tr>
+              @endforeach
             </tbody>
           </table>
         </div>
@@ -90,7 +93,7 @@
           <h4 class="center">PESAN DISINI</h4>
           <br>
           <br>
-          <form action="{{ url('/mirs/ajukan') }}" method="post">
+          <form action="{{ url('/mirs/ajukan') }}" method="post" onsubmit="return confirm('Yakin data sudah benar dan siap untuk di ajukan ?');">
             {{ csrf_field() }}
             <div class="clone1 clone">
               <div class="col s3">
@@ -141,7 +144,7 @@
                   <i class="material-icons left">delete</i>
                 </button>
               </div>
-               
+              <input type="hidden" name="ttlamount[]" class="ttlamountinput">
               <div class="col s12">
                 <div class="col s12 detail">
                   <div class="col s3">
@@ -232,33 +235,44 @@
                 <th>Nama Pemesan</th>
                 <th>No MIRS</th>
                 <th>Tanggal Pemesanan</th>
+                <th>Status</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>s</td>
-                <td>s</td> 
-                <td>s</td> 
-                <td>s</td> 
-                <td>
-                  <a href="#modal1" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
-                </td> 
-              </tr>
-            </tbody>
+            @php
+              $no=1;
+            @endphp
+            @foreach(\App\Http\Controllers\ctrlRole::persetujuan() as $mirs)
+
+                <tr>
+                  <td>{{ $no++ }}</td>
+                  <td>{{ $mirs->user->nama_lengkap }}</td> 
+                  <td>{{ $mirs->no_mirs }}</td> 
+                  <td>{{ $mirs->date }}</td> 
+                  <td>{!! \App\Http\Controllers\ctrlRole::getStatusMirs($mirs->idnya) !!}</td> 
+                  <td>
+                    <a href="#modal1" onclick="return loadMirsToPopUp({{$mirs->idnya}})" class="waves-effect waves-light green btn modal-trigger">Lihat <i class="fa fa-list"></i> </a>
+                  </td> 
+                </tr>
+              @endforeach
           </table>
         @endif
       </div>
       
-      <div id="modal1" class="modal">
-        <div class="modal-content">
-          <h4>Modal Header</h4>
-          <p>A bunch of text</p>
-          <textarea class="input-field materialize-textarea" placeholder="masukan alasan/keterangan" style="background: #0000000a"></textarea>
-        </div>
-        <div class="modal-footer">
-          <a href="" class="btn green">Approv</a>
-          <a href="" class="btn red">Not Approved</a>
-        </div>
+      <div id="modal1" class="modal modal-lg">
+        <form action="{{ url('/mirs/approved') }}" method="post">
+          {{ csrf_field() }}
+          <div class="modal-content">
+            <h4>Detail Mirs</h4>
+            <div id="dataModal">
+              <p><i class="fa fa-spinner fa-spin"></i> Loading</p>
+            </div>
+            
+          </div>
+          <div class="modal-footer approved-mirs">
+            <button class="btn green">Proses</button>
+          </div>
+        </form>
       </div>
     </div>
+

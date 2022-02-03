@@ -12,4 +12,9 @@ class mdlMirs extends Model
     {
     	return $this->hasMany('App\mdlMirsLine', 'id_mirs', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'request_by', 'id');
+    }
 }

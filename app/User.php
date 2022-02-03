@@ -30,4 +30,11 @@ class User extends Authenticatable
     public function divisi() { 
       return $this->hasOne('App\mdlDivisi', 'id', 'id_divisi'); 
     }
+
+    public function id_hirarki()
+    {
+        return $this->belongsTo('App\mdlHirarkiLine', 'id', 'id_karyawan');
+        // return $this->belongsTo('App\User', 'request_by', 'id');
+
+    }
 }
