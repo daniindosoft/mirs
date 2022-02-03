@@ -28,14 +28,10 @@
     <div id="app">
         @include('layouts.partials.nav')
         <div class="row">
-            <div class="col s1">
-            </div>
-            <div class="col s10">
+            <div class="col s12">
                 <div class="section">
                     @yield('content')
                 </div>
-            </div>
-            <div class="col s1">
             </div>
         </div>
     </div>

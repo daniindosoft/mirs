@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class mdlMaterial extends Model
+class mdlGl extends Model
 {
-    protected $table = 'zmm';
+    protected $table = 'gl';
     
 }

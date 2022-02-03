@@ -17,9 +17,12 @@
         </a>
     </li>
 </ul>
-<nav>
+<nav style="background: #509BA0 !important">
     <div class="container nav-wrapper">
-        <a href="{{ url('/') }}" class="brand-logo">{{ config('app.name', 'Laravel') }}</a>
+        {{-- <a href="{{ url('/') }}" class="brand-logo">{{ config('app.name', 'Laravel') }}</a> --}}
+        <a href="{{ url('/') }}" class="brand-logo">
+            <img src="https://www.wilmar-international.com/images/default-source/default-album/template/logo.png?sfvrsn=3e9d227d_2" style="width: 100px;">
+        </a>
         <a href="#" data-activates="mobile-sidenav" class="button-collapse"><i class="material-icons">menu</i></a>
 
         <ul class="right hide-on-med-and-down">

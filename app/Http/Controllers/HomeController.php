@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,8 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
+        //SELECT * FROM users as u inner join hirarki_line as hl on hl.id_karyawan=u.id;
+
         return view('welcome');   
     }
     public function index()

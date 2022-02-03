@@ -18,3 +18,8 @@ Auth::routes(['register' => false]);
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::prefix('/mirs')->group(function () {
+	Route::post('/ajukan', 'ctrlMirs@store');
+	Route::post('/approved', 'ctrlMirs@approved');
+	Route::get('/get/{id}', 'ctrlMirs@getSingleMirs');
+});
